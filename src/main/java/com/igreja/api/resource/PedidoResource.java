@@ -10,26 +10,26 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.igreja.api.model.Setor;
-import com.igreja.api.repository.SetorRepository;
+import com.igreja.api.model.Pedido;
+import com.igreja.api.repository.PedidoRepository;
 
 @RestController
-@RequestMapping("setores")
-public class SetorResource {
+@RequestMapping("pedidos")
+public class PedidoResource {
 	
 	@Autowired
-	private SetorRepository setorService;
+	private PedidoRepository pedidoService;
 	
 	@GetMapping
-	public ResponseEntity<List<Setor>> Listar(){
-		List<Setor> list = setorService.findAll();
+	public ResponseEntity<List<Pedido>> Listar(){
+		List<Pedido> list = pedidoService.findAll();
 		return ResponseEntity.ok().body(list);
 	}
 	
 	@GetMapping("/{codigo}")
-	public ResponseEntity<Optional<Setor>> buscarPeloCodigo(@PathVariable Long codigo){
-		Optional<Setor> setor = setorService.findById(codigo);
-		return ResponseEntity.ok().body(setor);
+	public ResponseEntity<Optional<Pedido>> buscarPeloCodigo(@PathVariable Long codigo){
+		Optional<Pedido> pedido = pedidoService.findById(codigo);
+		return ResponseEntity.ok().body(pedido);
 	}
 
 }

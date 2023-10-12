@@ -1,6 +1,8 @@
 package com.igreja.api.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Embedded;
@@ -13,6 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "igreja")
@@ -33,8 +37,27 @@ public class Igreja implements Serializable {
 	@NotNull
 	private Boolean ativo;
 
-
+	@NotNull
+	@ManyToOne
+	@JoinColumn(name = "codigo_setor")
 	private Setor setor;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "igreja")
+	private List<Pedido> pedidos = new ArrayList<>();
+
+	public Igreja() {
+
+	}
+
+	public Igreja(Long codigo, @NotNull String nome, Endereco endereco, @NotNull Boolean ativo, @NotNull Setor setor) {
+		super();
+		this.codigo = codigo;
+		this.nome = nome;
+		this.endereco = endereco;
+		this.ativo = ativo;
+		this.setor = setor;
+	}
 
 	public Long getCodigo() {
 		return codigo;
@@ -74,6 +97,12 @@ public class Igreja implements Serializable {
 
 	public void setSetor(Setor setor) {
 		this.setor = setor;
+	}
+	
+	
+
+	public List<Pedido> getPedidos() {
+		return pedidos;
 	}
 
 	@Override
