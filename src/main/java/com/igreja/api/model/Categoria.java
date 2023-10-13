@@ -1,6 +1,5 @@
 package com.igreja.api.model;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 import javax.persistence.Entity;
@@ -10,16 +9,24 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="setor")
-public class Setor implements Serializable {
-	private static final long serialVersionUID = 1L;
-
+@Table(name = "categoria")
+public class Categoria {
+	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long codigo;
 	
-	
 	private String nome;
+
+	public Categoria() {
+		
+	}
+
+	public Categoria(Long codigo, String nome) {
+		super();
+		this.codigo = codigo;
+		this.nome = nome;
+	}
 
 	public Long getCodigo() {
 		return codigo;
@@ -50,8 +57,8 @@ public class Setor implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Setor other = (Setor) obj;
+		Categoria other = (Categoria) obj;
 		return Objects.equals(codigo, other.codigo);
 	}
-	
+
 }
