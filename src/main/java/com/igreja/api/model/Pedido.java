@@ -2,7 +2,9 @@ package com.igreja.api.model;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,13 +12,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 
 @Entity
-@Table(name = "pedido")
+@Table(name = "pedidos")
 public class Pedido implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -27,12 +31,15 @@ public class Pedido implements Serializable {
 
 	@JsonFormat(shape = Shape.STRING, pattern = "dd-MM-yyyy'T'HH:mm:ss'Z'", timezone = "GMT")
 	private Instant moment;
-
+	
 	@ManyToOne
 	@JoinColumn(name = "codigo_igreja")
 	private Igreja igreja;
 
 	private Integer pedidoStatus;
+
+	@OneToMany(mappedBy = "codigo.pedido")
+	private Set<PedidoItem> items = new HashSet<>();
 
 	public Pedido() {
 
@@ -47,7 +54,7 @@ public class Pedido implements Serializable {
 	}
 
 	public Pedido(Long codigo) {
-	
+
 		this.codigo = codigo;
 	}
 
@@ -83,6 +90,11 @@ public class Pedido implements Serializable {
 		if (pedidoStatus != null) {
 			this.pedidoStatus = pedidoStatus.getcodigo();
 		}
+	}
+
+	@JsonIgnore
+	public Set<PedidoItem> getItems() {
+		return items;
 	}
 
 	@Override

@@ -7,6 +7,7 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.igreja.api.model.pk.PedidoItemPK;
 
 @Entity
@@ -15,7 +16,7 @@ public class PedidoItem implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
-	private PedidoItemPK codigo;
+	private PedidoItemPK codigo = new PedidoItemPK();
 
 	private Integer quantidade;
 	private Double preço;
@@ -30,6 +31,8 @@ public class PedidoItem implements Serializable {
 		this.quantidade = quantidade;
 		this.preço = preço;
 	}
+	
+	
 	
 	public Pedido getPedido() {
 		return codigo.getPedido();
