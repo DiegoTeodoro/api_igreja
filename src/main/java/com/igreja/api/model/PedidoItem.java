@@ -32,8 +32,7 @@ public class PedidoItem implements Serializable {
 		this.preço = preço;
 	}
 	
-	
-	
+	@JsonIgnore
 	public Pedido getPedido() {
 		return codigo.getPedido();
 	}
@@ -42,6 +41,7 @@ public class PedidoItem implements Serializable {
 		codigo.setPedido(pedido);
 	}
 	
+	@JsonIgnore
 	public Produto getProduto() {
 		return codigo.getProduto();
 	}

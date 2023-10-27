@@ -50,7 +50,7 @@ public class Igreja implements Serializable {
 
 	}
 
-	public Igreja(Long codigo, @NotNull String nome, Endereco endereco, @NotNull Boolean ativo, @NotNull Setor setor) {
+	public Igreja(Long codigo, String nome, Endereco endereco,  Boolean ativo, Setor setor) {
 		super();
 		this.codigo = codigo;
 		this.nome = nome;
@@ -99,8 +99,6 @@ public class Igreja implements Serializable {
 		this.setor = setor;
 	}
 	
-	
-
 	public List<Pedido> getPedidos() {
 		return pedidos;
 	}

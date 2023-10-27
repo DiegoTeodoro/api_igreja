@@ -7,6 +7,7 @@ import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.igreja.api.model.Pedido;
 import com.igreja.api.model.Produto;
 
@@ -22,7 +23,7 @@ public class PedidoItemPK implements Serializable {
 	@JoinColumn(name = "produto_codigo")
 	private Produto produto;
 	
-	
+	@JsonIgnore
 	public Pedido getPedido() {
 		return pedido;
 	}

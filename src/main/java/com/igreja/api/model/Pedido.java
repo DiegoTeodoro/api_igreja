@@ -31,12 +31,13 @@ public class Pedido implements Serializable {
 
 	@JsonFormat(shape = Shape.STRING, pattern = "dd-MM-yyyy'T'HH:mm:ss'Z'", timezone = "GMT")
 	private Instant moment;
+
+	private Integer pedidoStatus;
+
 	
 	@ManyToOne
 	@JoinColumn(name = "codigo_igreja")
 	private Igreja igreja;
-
-	private Integer pedidoStatus;
 
 	@OneToMany(mappedBy = "codigo.pedido")
 	private Set<PedidoItem> items = new HashSet<>();
@@ -92,7 +93,7 @@ public class Pedido implements Serializable {
 		}
 	}
 
-	@JsonIgnore
+	//@JsonIgnore
 	public Set<PedidoItem> getItems() {
 		return items;
 	}

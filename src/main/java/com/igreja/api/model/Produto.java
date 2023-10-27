@@ -1,6 +1,8 @@
 package com.igreja.api.model;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,7 +10,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "produto")
@@ -26,6 +31,9 @@ public class Produto {
 	@ManyToOne
 	@JoinColumn(name = "codigo_categoria")
 	private Categoria categoria;
+	
+	@OneToMany(mappedBy = "codigo.produto")
+	private Set<PedidoItem> items = new HashSet<>();
 
 	public Produto() {
 	}
@@ -74,8 +82,6 @@ public class Produto {
 		this.preco = preco;
 	}
 	
-	
-
 	public String getImgUrl() {
 		return imgUrl;
 	}
@@ -91,6 +97,16 @@ public class Produto {
 	public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
 	}
+	
+	@JsonIgnore
+	public Set<Pedido> getPedidos(){
+		Set<Pedido> set = new HashSet<>();
+		for(PedidoItem x : items) {
+			set.add(x.getPedido());
+		}
+		return set;
+	}
+	
 
 	@Override
 	public int hashCode() {
