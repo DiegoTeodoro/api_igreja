@@ -28,4 +28,8 @@ public class IgrejaService {
 		return igrejaRepository.save(igreja);
 
 	}
+	
+	public void delete(Long codigo) {
+		igrejaRepository.deleteById(codigo);
+	}
 }
