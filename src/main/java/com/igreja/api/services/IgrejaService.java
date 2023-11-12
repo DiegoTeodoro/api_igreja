@@ -11,17 +11,21 @@ import com.igreja.api.repository.IgrejaRepository;
 
 @Service
 public class IgrejaService {
-	
+
 	@Autowired
 	private IgrejaRepository igrejaRepository;
-	
-	public List<Igreja> listar(){
-		return  igrejaRepository.findAll();
+
+	public List<Igreja> listar() {
+		return igrejaRepository.findAll();
 	}
-	
+
 	public Igreja buscarPeloCodigo(Long codigo) {
-		Optional<Igreja> obj =  igrejaRepository.findById(codigo);
+		Optional<Igreja> obj = igrejaRepository.findById(codigo);
 		return obj.get();
 	}
 
+	public Igreja salvar(Igreja igreja) {
+		return igrejaRepository.save(igreja);
+
+	}
 }

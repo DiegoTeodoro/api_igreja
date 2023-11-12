@@ -10,6 +10,7 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.igreja.api.model.pk.PedidoItemPK;
 
+
 @Entity
 @Table(name = "pedido_item")
 public class PedidoItem implements Serializable {
@@ -19,17 +20,18 @@ public class PedidoItem implements Serializable {
 	private PedidoItemPK codigo = new PedidoItemPK();
 
 	private Integer quantidade;
-	private Double preço;
+	private Double preco;
 
 	public PedidoItem() {
 
 	}
 
-	public PedidoItem(Pedido pedido, Produto produto, Integer quantidade, Double preço) {
+	public PedidoItem(Pedido pedido, Produto produto, Integer quantidade, Double preco) {
+		super();
 		codigo.setPedido(pedido);
 		codigo.setProduto(produto);
 		this.quantidade = quantidade;
-		this.preço = preço;
+		this.preco = preco;
 	}
 	
 	@JsonIgnore
@@ -41,7 +43,7 @@ public class PedidoItem implements Serializable {
 		codigo.setPedido(pedido);
 	}
 	
-	@JsonIgnore
+	
 	public Produto getProduto() {
 		return codigo.getProduto();
 	}
@@ -66,14 +68,19 @@ public class PedidoItem implements Serializable {
 		this.quantidade = quantidade;
 	}
 
-	public Double getPreço() {
-		return preço;
+	public Double getPreco() {
+		return preco;
 	}
 
-	public void setPreço(Double preço) {
-		this.preço = preço;
+	public void setPreco(Double preco) {
+		this.preco = preco;
 	}
-
+	
+	public Double getSubTotal() {
+		return preco * quantidade;
+	}
+	
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(codigo);

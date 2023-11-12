@@ -27,18 +27,18 @@ public class Produto {
 	private String descricao;
 	private Double preco;
 	private String imgUrl;
+	private String codigoBarras;
 
 	@ManyToOne
 	@JoinColumn(name = "codigo_categoria")
 	private Categoria categoria;
-	
+
 	@OneToMany(mappedBy = "codigo.produto")
 	private Set<PedidoItem> items = new HashSet<>();
 
 	public Produto() {
 	}
 
-	
 	public Produto(Long codigo, String nome, String descricao, Double preco, String imgUrl, Categoria categoria) {
 		super();
 		this.codigo = codigo;
@@ -48,7 +48,6 @@ public class Produto {
 		this.imgUrl = imgUrl;
 		this.categoria = categoria;
 	}
-
 
 	public Long getCodigo() {
 		return codigo;
@@ -81,7 +80,7 @@ public class Produto {
 	public void setPreco(Double preco) {
 		this.preco = preco;
 	}
-	
+
 	public String getImgUrl() {
 		return imgUrl;
 	}
@@ -97,16 +96,23 @@ public class Produto {
 	public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
 	}
-	
+
+	public String getCodigoBarras() {
+		return codigoBarras;
+	}
+
+	public void setCodigoBarras(String codigoBarras) {
+		this.codigoBarras = codigoBarras;
+	}
+
 	@JsonIgnore
-	public Set<Pedido> getPedidos(){
+	public Set<Pedido> getPedidos() {
 		Set<Pedido> set = new HashSet<>();
-		for(PedidoItem x : items) {
+		for (PedidoItem x : items) {
 			set.add(x.getPedido());
 		}
 		return set;
 	}
-	
 
 	@Override
 	public int hashCode() {

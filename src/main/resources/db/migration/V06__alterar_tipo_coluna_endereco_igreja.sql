@@ -1,0 +1,2 @@
+ALTER TABLE igreja ALTER COLUMN logradouro TYPE VARCHAR(100);
+
