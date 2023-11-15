@@ -6,4 +6,6 @@ import com.igreja.api.model.Igreja;
 
 public interface IgrejaRepository extends JpaRepository<Igreja, Long> {
 
+	
+
 }

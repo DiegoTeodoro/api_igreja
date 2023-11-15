@@ -11,48 +11,64 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.igreja.api.model.Igreja;
 import com.igreja.api.repository.IgrejaRepository;
+import com.igreja.api.services.IgrejaService;
 
 @RestController
 @RequestMapping("igrejas")
 public class IgrejaResource {
+
+	@Autowired
+	private IgrejaRepository igrejaRepository;
 	
 	@Autowired
-	private IgrejaRepository igrejaService;
-	
+	private IgrejaService igrejaService;
+
 	@GetMapping
-	public ResponseEntity<List<Igreja>> Listar(){
-		List<Igreja> list = igrejaService.findAll();
+	public ResponseEntity<List<Igreja>> Listar() {
+		List<Igreja> list = igrejaRepository.findAll();
 		return ResponseEntity.ok().body(list);
 	}
-	
+
 	@GetMapping("/{codigo}")
-	public ResponseEntity<Optional<Igreja>> buscarPeloCodigo(@PathVariable Long codigo){
-		Optional<Igreja> igreja = igrejaService.findById(codigo);
+	public ResponseEntity<Optional<Igreja>> buscarPeloCodigo(@PathVariable Long codigo) {
+		Optional<Igreja> igreja = igrejaRepository.findById(codigo);
 		return ResponseEntity.ok().body(igreja);
 	}
-	
+
 	@PostMapping
-	public ResponseEntity<Igreja> salvar(@RequestBody Igreja igreja){
-		igreja = igrejaService.save(igreja);
+	public ResponseEntity<Igreja> salvar(@RequestBody Igreja igreja) {
+		igreja = igrejaRepository.save(igreja);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{codigo}")
 				.buildAndExpand(igreja.getCodigo()).toUri();
-		
+
 		return ResponseEntity.created(uri).body(igreja);
 	}
-	
+
 	@DeleteMapping("/{codigo}")
-	public ResponseEntity<Void> delete(@PathVariable Long codigo){
-		igrejaService.deleteById(codigo);
+	public ResponseEntity<Void> delete(@PathVariable Long codigo) {
+		igrejaRepository.deleteById(codigo);
 		return ResponseEntity.noContent().build();
-		
+
 	}
 
+	@PutMapping("/{codigo}")
+	public ResponseEntity<Igreja> atualizar(@PathVariable Long codigo, @RequestBody Igreja igreja) {
+		Igreja igrejaSalva = igrejaService.atualizar(codigo, igreja);
+		return ResponseEntity.ok(igrejaSalva);
+	}
+
+	@PutMapping("/{codigo}/ativo")
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
+	public void atualizarPropriedadeAtivo(@PathVariable Long codigo, @RequestBody Boolean ativo) {
+		igrejaService.atualizarPropriedadeAtivo(codigo, ativo);
+	}
 }
