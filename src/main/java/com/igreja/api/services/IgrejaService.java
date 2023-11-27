@@ -3,6 +3,8 @@ package com.igreja.api.services;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -49,9 +51,16 @@ public class IgrejaService {
 	}
 
 	public Igreja atualizar(Long codigo, Igreja igreja) {
-		Igreja igrejaSalva = buscarIgrejaPeloCodigo(codigo);
-		BeanUtils.copyProperties(igreja, igrejaSalva, "codigo");
-		return igrejaRepository.save(igreja);
+		try {
+			Igreja igrejaSalva = buscarIgrejaPeloCodigo(codigo);
+			BeanUtils.copyProperties(igreja, igrejaSalva, "codigo");
+			return igrejaRepository.save(igreja);
+		} catch (EntityNotFoundException e) {
+			throw new ResourceNotFoundException(codigo);
+		}catch (EmptyResultDataAccessException e) {
+			throw new ResourceNotFoundException(codigo);
+		}
+		
 	}
 
 	public Igreja buscarIgrejaPeloCodigo(Long codigo) {
