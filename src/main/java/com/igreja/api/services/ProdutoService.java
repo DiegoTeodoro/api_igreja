@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.igreja.api.model.Produto;
 import com.igreja.api.repository.ProdutoRepository;
+import com.igreja.api.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class ProdutoService {
@@ -20,8 +21,9 @@ public class ProdutoService {
 	}
 	
 	public Produto buscarPeloCodigo(Long codigo) {
-		Optional<Produto> obj = produtoRepository.findById(codigo);
-		return obj.get();
+		Optional<Produto> produto = produtoRepository.findById(codigo);
+		return produto.orElseThrow(() -> new ResourceNotFoundException(codigo));
+
 	}
 
 }

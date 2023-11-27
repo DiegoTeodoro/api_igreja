@@ -2,7 +2,6 @@ package com.igreja.api.resource;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,19 +33,20 @@ public class IgrejaResource {
 
 	@GetMapping
 	public ResponseEntity<List<Igreja>> Listar() {
-		List<Igreja> list = igrejaRepository.findAll();
+		List<Igreja> list = igrejaService.listar();
 		return ResponseEntity.ok().body(list);
 	}
 
 	@GetMapping("/{codigo}")
-	public ResponseEntity<Optional<Igreja>> buscarPeloCodigo(@PathVariable Long codigo) {
-		Optional<Igreja> igreja = igrejaRepository.findById(codigo);
+	public ResponseEntity<Igreja> buscarPeloCodigo(@PathVariable Long codigo) {
+		Igreja igreja = igrejaService.buscarPeloCodigo(codigo);
 		return ResponseEntity.ok().body(igreja);
+		
 	}
 
 	@PostMapping
 	public ResponseEntity<Igreja> salvar(@RequestBody Igreja igreja) {
-		igreja = igrejaRepository.save(igreja);
+		igreja = igrejaService.salvar(igreja);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{codigo}")
 				.buildAndExpand(igreja.getCodigo()).toUri();
 
@@ -55,7 +55,7 @@ public class IgrejaResource {
 
 	@DeleteMapping("/{codigo}")
 	public ResponseEntity<Void> delete(@PathVariable Long codigo) {
-		igrejaRepository.deleteById(codigo);
+		igrejaService.remover(codigo);
 		return ResponseEntity.noContent().build();
 
 	}

@@ -5,11 +5,14 @@ import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.igreja.api.model.Igreja;
 import com.igreja.api.repository.IgrejaRepository;
+import com.igreja.api.resource.exepctions.DatabaseException;
+import com.igreja.api.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class IgrejaService {
@@ -22,8 +25,9 @@ public class IgrejaService {
 	}
 
 	public Igreja buscarPeloCodigo(Long codigo) {
-		Optional<Igreja> obj = igrejaRepository.findById(codigo);
-		return obj.get();
+		Optional<Igreja> igreja = igrejaRepository.findById(codigo);
+		return igreja.orElseThrow(() -> new ResourceNotFoundException(codigo));
+
 	}
 
 	public Igreja salvar(Igreja igreja) {
@@ -31,8 +35,17 @@ public class IgrejaService {
 
 	}
 
-	public void delete(Long codigo) {
-		igrejaRepository.deleteById(codigo);
+	public void remover(Long codigo) {
+		try {
+			igrejaRepository.deleteById(codigo);
+
+		} catch (EmptyResultDataAccessException e) {
+			throw new ResourceNotFoundException(codigo);
+
+		} catch (DataIntegrityViolationException e) {
+			throw new DatabaseException(e.getMessage());
+		}
+
 	}
 
 	public Igreja atualizar(Long codigo, Igreja igreja) {
@@ -45,7 +58,7 @@ public class IgrejaService {
 		Igreja igrejaSalva = igrejaRepository.findById(codigo).orElseThrow(() -> new EmptyResultDataAccessException(1));
 		return igrejaSalva;
 	}
-	
+
 	public void atualizarPropriedadeAtivo(Long codigo, Boolean ativo) {
 		Igreja igrejaSalva = buscarIgrejaPeloCodigo(codigo);
 		igrejaSalva.setAtivo(ativo);
