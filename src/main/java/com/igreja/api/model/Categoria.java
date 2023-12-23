@@ -11,15 +11,15 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "categoria")
 public class Categoria {
-	
+
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long codigo;
-	
+
 	private String nome;
 
 	public Categoria() {
-		
+
 	}
 
 	public Categoria(Long codigo, String nome) {
